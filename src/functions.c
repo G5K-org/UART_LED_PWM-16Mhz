@@ -12,7 +12,6 @@ void init_GPIO()
 }
 void USART_Init( unsigned int ubrr)
 {
-/* Set baud rate */
 UBRRH = (unsigned char)(ubrr>>8);
 UBRRL = (unsigned char)ubrr;
 UCSRB = (1<<RXEN)|(1<<TXEN);
@@ -23,10 +22,16 @@ UCSRC = (1<<URSEL)|(1<<USBS)|(3<<UCSZ0);
 void init_ADC()
 {
 ADMUX |= (1<<REFS0);
-ADCSRA |= (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1);
+ADCSRA |= (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 }
 
-
+void init_PWM()
+{
+//PD7 // OC2
+TCNT2 = 0;
+TCCR2 |= (1<<WGM21)|(1<<WGM20)|(1<<CS20)|(1<<COM21);
+DDRD|= (1<<PD7);
+}
 
 
 void USART_Transmit_String(char* data )
@@ -34,14 +39,16 @@ void USART_Transmit_String(char* data )
 int i = 0;
 while(data[i]!='\0')
 {
-/* Wait for empty transmit buffer */
-while (!( UCSRA & (1<<UDRE)));
-/* Put data into buffer, sends the data */
+while (!(UCSRA & (1<<UDRE)));
 UDR = data[i];
 i++;
 }
 }
 
+void set_LED_Brightnes(int value)
+{
+    OCR2 = value;
+}
 
 void flash_light()
 {
@@ -61,6 +68,7 @@ int read_ADC()
     return alldata;
     
     }
-    return 99;
+    return 0;
     
 }
+
