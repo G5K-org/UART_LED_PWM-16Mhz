@@ -1,10 +1,4 @@
-#include <avr/io.h>
-#include <util/delay.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-
+#include "functions.h"
 
 void init_GPIO()
 {
@@ -43,6 +37,10 @@ while (!(UCSRA & (1<<UDRE)));
 UDR = data[i];
 i++;
 }
+while (!(UCSRA & (1<<UDRE)));
+UDR = '\n';
+
+
 }
 
 void set_LED_Brightnes(int value)

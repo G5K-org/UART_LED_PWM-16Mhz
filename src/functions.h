@@ -1,6 +1,13 @@
+#include <avr/io.h>
+#include <util/delay.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <avr/io.h>
 
-#ifndef __FUNCTIONS
-#define __FUNCTIONS
+
+#ifndef __FUNCTIONSXXXX
+#define __FUNCTIONSXXXX
 
 void init_GPIO();
 void flash_light();
